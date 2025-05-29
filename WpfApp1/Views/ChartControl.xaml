@@ -1,0 +1,7 @@
+﻿<UserControl x:Class="Aida64Clone.Views.ChartControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:oxy="http://oxyplot.org/wpf"
+             Height="300">
+    <oxy:PlotView Model="{Binding PlotModel}" />
+</UserControl>

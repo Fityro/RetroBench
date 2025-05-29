@@ -1,0 +1,71 @@
+﻿<Window x:Class="Aida64Clone.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Aida64Clone.Views"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        mc:Ignorable="d"
+        Title="AIDA64 Clone" Height="720" Width="1280">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="300"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Меню -->
+        <Menu Grid.Row="0" Grid.ColumnSpan="2">
+            <MenuItem Header="_Файл">
+                <MenuItem Header="Экспорт" Command="{Binding ExportDataCommand}"/>
+            </MenuItem>
+            <MenuItem Header="_Справка">
+                <MenuItem Header="Справка" Command="{Binding OpenHelpCommand}"/>
+            </MenuItem>
+        </Menu>
+
+        <!-- Древо -->
+        <TreeView ItemsSource="{Binding MenuTree}"
+                  Grid.Row="1" 
+                  Grid.Column="0"
+                  x:Name="MainTreeView"
+                  SelectedItemChanged="TreeView_SelectedItemChanged">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding Name}"/>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+
+        <!-- Таблица -->
+        <DataGrid ItemsSource="{Binding TableView.View}"
+                  AutoGenerateColumns="False"
+                  Grid.Row="1" 
+                  Grid.Column="1">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Параметр" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Значение" Binding="{Binding Value}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Status}" Value="Error">
+                                    <Setter Property="Foreground" Value="Red"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Status}" Value="Warning">
+                                    <Setter Property="Foreground" Value="Orange"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- График -->
+        <local:ChartControl Grid.Row="2" Grid.ColumnSpan="2" Height="300"/>
+    </Grid>
+</Window>
